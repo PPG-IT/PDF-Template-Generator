@@ -279,16 +279,14 @@ namespace PDF_Template_Generator.Services
             }
         }
 
-        private BaseColor GetColor(string colorName)
+        private BaseColor GetColor(string colorName) => colorName?.ToLower() switch
         {
-            return colorName?.ToLower() switch
-            {
-                "red" => BaseColor.RED,
-                "blue" => BaseColor.BLUE,
-                "green" => BaseColor.GREEN,
-                "black" or _ => BaseColor.BLACK
-            };
-        }
+            "red" => BaseColor.RED,
+            "blue" => BaseColor.BLUE,
+            "green" => BaseColor.GREEN,
+            "black" or _ => BaseColor.BLACK
+        };
+        
 
         private string GetSpineAssetPath(ProductLine productLine)
         {

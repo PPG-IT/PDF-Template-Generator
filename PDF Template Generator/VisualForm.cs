@@ -68,8 +68,30 @@ namespace PDF_Template_Generator
         {
             // Create new element at clicked position
             var elementType = elementToolbar.SelectedElementType;
-            var element = CreateNewElement(elementType, e.Position);
             
+            // Prevent users from adding more than 5 text elements or more than 1 of all other elements
+            switch (elementType)
+            {
+                case ElementType.Text:
+                    if (pdfPreviewControl.GetElements().Count(x => x.Type == elementType) == 5)
+                    {
+                        MessageBox.Show($"Cannot add more than 5 {elementType} elements. Please delete one to add another.", "Error", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    break;
+                default:
+                    if (pdfPreviewControl.GetElements().Count(x => x.Type == elementType) == 1)
+                    {
+                        MessageBox.Show($"Cannot add more than 1 {elementType} element. Please delete one to add another.", "Error", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    break;
+            }
+            
+            // Create and add element
+            var element = CreateNewElement(elementType, e.Position);
             pdfPreviewControl.AddElement(element);
             propertiesPanel.SetSelectedElement(element);
             
