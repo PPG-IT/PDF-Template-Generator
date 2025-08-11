@@ -29,7 +29,7 @@ namespace PDF_Template_Generator.Models
         public float AddressSize { get; set; } = 12f;
         public string AddressAlignment { get; set; } = "Left";
         public string AddressColor { get; set; } = "Black";
-        #endregion Image Settings
+        #endregion Address Settings
 
         #region Barcode Settings
         public bool AddBarcode { get; set; } = false;

@@ -69,6 +69,14 @@ namespace PDF_Template_Generator
             // Create new element at clicked position
             var elementType = elementToolbar.SelectedElementType;
             
+            // Cannot add elements without source PDF loaded in viewer
+            if (string.IsNullOrEmpty(_currentTemplate.SourcePdfPath))
+            {
+                MessageBox.Show($"Please load a source PDF before adding elements", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
             // Prevent users from adding more than 5 text elements or more than 1 of all other elements
             switch (elementType)
             {
