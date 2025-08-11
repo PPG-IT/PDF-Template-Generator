@@ -318,14 +318,16 @@ namespace PDF_Template_Generator.Controls
             var address3 = GetElementProperty("Address3", "");
             var font = GetElementProperty("Font", "Helvetica");
             var fontSize = GetElementProperty("FontSize", 12);
+            var alignment = GetElementProperty("Alignment", "Left");
             var color = GetElementProperty("Color", "Black");
 
             AddTextInput(panel, "Line 1:", address1, (value) => UpdateElementProperty("Address1", value), row++);
             AddTextInput(panel, "Line 2:", address2, (value) => UpdateElementProperty("Address2", value), row++);
             AddTextInput(panel, "Line 3:", address3, (value) => UpdateElementProperty("Address3", value), row++);
-            AddComboBox(panel, "Font:", new [] { "Helvetica", "Times New Roman", "Courier" }, font, value => UpdateElementProperty("Font", value), row++);
+            AddComboBox(panel, "Font:", ["Helvetica", "Times New Roman", "Courier"], font, value => UpdateElementProperty("Font", value), row++);
             AddNumericInput(panel, "Font Size:", fontSize, (value) => UpdateElementProperty("FontSize", value), row++);
-            AddComboBox(panel, "Color:", new[] { "Black", "Red", "Blue", "Green" }, color, (value) => UpdateElementProperty("Color", value), row++);
+            AddComboBox(panel, "Text Alignment", ["Left", "Center", "Right"],alignment, (value) => UpdateElementProperty("TextAlignment", value), row++);
+            AddComboBox(panel, "Color:", ["Black", "Red", "Blue", "Green"], color, (value) => UpdateElementProperty("Color", value), row++);
         }
 
         private void AddTextProperties(TableLayoutPanel panel, ref int row)
@@ -338,9 +340,9 @@ namespace PDF_Template_Generator.Controls
             var color = GetElementProperty("Color", "Black");
 
             AddTextInput(panel, "Text:", text, (value) => UpdateElementProperty("Text", value), row++);
-            AddComboBox(panel, "Font:", new [] { "Helvetica", "Times New Roman", "Courier" }, font, value => UpdateElementProperty("Font", value), row++);
+            AddComboBox(panel, "Font:", ["Helvetica", "Times New Roman", "Courier"], font, value => UpdateElementProperty("Font", value), row++);
             AddNumericInput(panel, "Font Size:", fontSize, (value) => UpdateElementProperty("FontSize", value), row++);
-            AddComboBox(panel, "Color:", new[] { "Black", "Red", "Blue", "Green" }, color, (value) => UpdateElementProperty("Color", value), row++);
+            AddComboBox(panel, "Color:", ["Black", "Red", "Blue", "Green"], color, (value) => UpdateElementProperty("Color", value), row++);
         }
 
 

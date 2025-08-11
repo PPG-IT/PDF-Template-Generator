@@ -27,6 +27,7 @@ namespace PDF_Template_Generator.Models
         public int AddressY { get; set; } = 0;
         public string AddressFont { get; set; } = "Helvetica";
         public float AddressSize { get; set; } = 12f;
+        public string AddressAlignment { get; set; } = "Left";
         public string AddressColor { get; set; } = "Black";
         #endregion Image Settings
 

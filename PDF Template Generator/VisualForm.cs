@@ -567,6 +567,7 @@ namespace PDF_Template_Generator
                 addressElement.Properties["Address3"] = template.Address3;
                 addressElement.Properties["Font"] = template.AddressFont;
                 addressElement.Properties["FontSize"] = (int)template.AddressSize;
+                addressElement.Properties["TextAlignment"] = template.AddressAlignment;
                 addressElement.Properties["Color"] = template.AddressColor;
                 pdfPreviewControl.AddElement(addressElement);
             }
@@ -666,6 +667,7 @@ namespace PDF_Template_Generator
                         _currentTemplate.AddressX = element.X;
                         _currentTemplate.AddressY = element.Y;
                         _currentTemplate.AddressSize = (int)element.Properties.GetValueOrDefault("FontSize", 12);
+                        _currentTemplate.AddressAlignment = element.Properties.GetValueOrDefault("TextAlignment", "Left").ToString() ?? "Left";
                         _currentTemplate.AddressColor = element.Properties.GetValueOrDefault("Color", "Black").ToString() ?? "Black";
                         break;
 

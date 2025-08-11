@@ -179,29 +179,30 @@ namespace PDF_Template_Generator.Services
             {
                 var color = GetColor(config.AddressColor);
                 var bf = GetFont(config.AddressFont);
+                var headerSize = config.AddressSize + 4;
+                var bodySize = config.AddressSize;
+                var alignment = GetAlignment(config.AddressAlignment);
+                const int lineSpacing = 1;
                 cb.SetColorFill(color);
-                cb.SetFontAndSize(bf, config.AddressSize);
-
+                cb.BeginText();
+                
+                cb.SetFontAndSize(bf, headerSize);
                 if (!string.IsNullOrEmpty(config.Address1))
                 {
-                    cb.BeginText();
-                    cb.ShowTextAligned(0, config.Address1, config.AddressX, config.AddressY + 10, 0);
-                    cb.EndText();
+                    cb.ShowTextAligned(alignment, config.Address1, config.AddressX, config.AddressY + headerSize + lineSpacing, 0);
                 }
-
+                
+                cb.SetFontAndSize(bf, bodySize); 
                 if (!string.IsNullOrEmpty(config.Address2))
                 {
-                    cb.BeginText();
-                    cb.ShowTextAligned(0, config.Address2, config.AddressX, config.AddressY, 0);
-                    cb.EndText();
+                    cb.ShowTextAligned(alignment, config.Address2, config.AddressX, config.AddressY, 0);
                 }
 
                 if (!string.IsNullOrEmpty(config.Address3))
                 {
-                    cb.BeginText();
-                    cb.ShowTextAligned(0, config.Address3, config.AddressX, config.AddressY - 10, 0);
-                    cb.EndText();
+                    cb.ShowTextAligned(alignment, config.Address3, config.AddressX, config.AddressY - bodySize - lineSpacing, 0);
                 }
+                cb.EndText();
             }
             catch
             {
@@ -294,7 +295,13 @@ namespace PDF_Template_Generator.Services
             "Courier" => BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.EMBEDDED),
             "Helvetica" or _ => BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED),
         };
-        
+
+        private int GetAlignment(string alignment) => alignment switch
+        {
+            "Center" => PdfContentByte.ALIGN_CENTER,
+            "Right" => PdfContentByte.ALIGN_RIGHT,
+            "Left" or _ => PdfContentByte.ALIGN_LEFT,
+        };
 
         private string GetSpineAssetPath(ProductLine productLine)
         {
