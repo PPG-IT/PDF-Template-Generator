@@ -47,7 +47,6 @@ namespace PDF_Template_Generator.Services
                         using (var stamper = new PdfStamper(reader, fs))
                         {
                             var cb = stamper.GetOverContent(1);
-                            var bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
                             // Add background elements first
                             AddBackgroundElements(cb, config);
@@ -67,7 +66,7 @@ namespace PDF_Template_Generator.Services
                             // Add address text
                             if (!string.IsNullOrEmpty(config.Address1) || !string.IsNullOrEmpty(config.Address2) || !string.IsNullOrEmpty(config.Address3))
                             {
-                                AddAddressText(cb, bf, config);
+                                AddAddressText(cb, config);
                             }
 
                             // Add barcode if enabled
@@ -77,7 +76,7 @@ namespace PDF_Template_Generator.Services
                             }
 
                             // Add text elements
-                            AddTextElements(cb, bf, config);
+                            AddTextElements(cb, config);
 
                             stamper.Close();
                         }
@@ -174,11 +173,12 @@ namespace PDF_Template_Generator.Services
             }
         }
 
-        private void AddAddressText(PdfContentByte cb, BaseFont bf, TemplateConfig config)
+        private void AddAddressText(PdfContentByte cb, TemplateConfig config)
         {
             try
             {
                 var color = GetColor(config.AddressColor);
+                var bf = GetFont(config.AddressFont);
                 cb.SetColorFill(color);
                 cb.SetFontAndSize(bf, config.AddressSize);
 
@@ -250,22 +250,23 @@ namespace PDF_Template_Generator.Services
             }
         }
 
-        private void AddTextElements(PdfContentByte cb, BaseFont bf, TemplateConfig config)
+        private void AddTextElements(PdfContentByte cb, TemplateConfig config)
         {
-            AddTextElement(cb, bf, config.Text1, config.Text1X, config.Text1Y, config.Text1Size, config.Text1Color);
-            AddTextElement(cb, bf, config.Text2, config.Text2X, config.Text2Y, config.Text2Size, config.Text2Color);
-            AddTextElement(cb, bf, config.Text3, config.Text3X, config.Text3Y, config.Text3Size, config.Text3Color);
-            AddTextElement(cb, bf, config.Text4, config.Text4X, config.Text4Y, config.Text4Size, config.Text4Color);
-            AddTextElement(cb, bf, config.Text5, config.Text5X, config.Text5Y, config.Text5Size, config.Text5Color);
+            AddTextElement(cb, config.Text1Font, config.Text1, config.Text1X, config.Text1Y, config.Text1Size, config.Text1Color);
+            AddTextElement(cb, config.Text2Font, config.Text2, config.Text2X, config.Text2Y, config.Text2Size, config.Text2Color);
+            AddTextElement(cb, config.Text3Font, config.Text3, config.Text3X, config.Text3Y, config.Text3Size, config.Text3Color);
+            AddTextElement(cb, config.Text4Font, config.Text4, config.Text4X, config.Text4Y, config.Text4Size, config.Text4Color);
+            AddTextElement(cb, config.Text5Font, config.Text5, config.Text5X, config.Text5Y, config.Text5Size, config.Text5Color);
         }
 
-        private void AddTextElement(PdfContentByte cb, BaseFont bf, string text, int x, int y, float size, string color)
+        private void AddTextElement(PdfContentByte cb, string font, string text, int x, int y, float size, string color)
         {
             if (string.IsNullOrEmpty(text)) return;
 
             try
             {
                 var textColor = GetColor(color);
+                var bf = GetFont(font);
                 cb.SetColorFill(textColor);
                 cb.SetFontAndSize(bf, size);
 
@@ -285,6 +286,13 @@ namespace PDF_Template_Generator.Services
             "blue" => BaseColor.BLUE,
             "green" => BaseColor.GREEN,
             "black" or _ => BaseColor.BLACK
+        };
+
+        private BaseFont GetFont(string font) => font switch
+        {
+            "Times New Roman" => BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED),
+            "Courier" => BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.EMBEDDED),
+            "Helvetica" or _ => BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED),
         };
         
 

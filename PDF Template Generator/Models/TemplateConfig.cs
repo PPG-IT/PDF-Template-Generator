@@ -5,28 +5,32 @@ namespace PDF_Template_Generator.Models
 {
     public class TemplateConfig
     {
-        // Basic Info
+        #region Basic Info
         public string Name { get; set; } = string.Empty;
         public ProductLine ProductLine { get; set; } = ProductLine.Playaway;
         public string SourcePdfPath { get; set; } = string.Empty;
+        #endregion Basic Info
 
-        // Logo Settings
+        #region Logo Settings
         public bool AddLogo { get; set; } = false;
         public string LogoPath { get; set; } = string.Empty;
         public int LogoScale { get; set; } = 100;
         public int LogoX { get; set; } = 0;
         public int LogoY { get; set; } = 0;
+        #endregion Logo Settings
 
-        // Address Settings
+        #region Address Settings
         public string Address1 { get; set; } = string.Empty;
         public string Address2 { get; set; } = string.Empty;
         public string Address3 { get; set; } = string.Empty;
         public int AddressX { get; set; } = 0;
         public int AddressY { get; set; } = 0;
+        public string AddressFont { get; set; } = "Helvetica";
         public float AddressSize { get; set; } = 12f;
         public string AddressColor { get; set; } = "Black";
+        #endregion Image Settings
 
-        // Barcode Settings
+        #region Barcode Settings
         public bool AddBarcode { get; set; } = false;
         public string BarcodePath { get; set; } = string.Empty;
         public string BarcodeNumber { get; set; } = string.Empty;
@@ -35,43 +39,51 @@ namespace PDF_Template_Generator.Models
         public int BarcodeY { get; set; } = 0;
         public string BarcodeType { get; set; } = "CODABAR";
         public int BarcodeRotation { get; set; } = 0;
+        #endregion
 
-        // Text Fields (5 custom text elements)
+        #region Text Fields (5 Limit)
         public string Text1 { get; set; } = string.Empty;
         public int Text1X { get; set; } = 0;
         public int Text1Y { get; set; } = 0;
+        public string Text1Font { get; set; } = "Helvetica";
         public float Text1Size { get; set; } = 12f;
         public string Text1Color { get; set; } = "Black";
 
         public string Text2 { get; set; } = string.Empty;
         public int Text2X { get; set; } = 0;
         public int Text2Y { get; set; } = 0;
+        public string Text2Font { get; set; } = "Helvetica";
         public float Text2Size { get; set; } = 12f;
         public string Text2Color { get; set; } = "Black";
 
         public string Text3 { get; set; } = string.Empty;
         public int Text3X { get; set; } = 0;
         public int Text3Y { get; set; } = 0;
+        public string Text3Font { get; set; } = "Helvetica";
         public float Text3Size { get; set; } = 12f;
         public string Text3Color { get; set; } = "Black";
 
         public string Text4 { get; set; } = string.Empty;
         public int Text4X { get; set; } = 0;
         public int Text4Y { get; set; } = 0;
+        public string Text4Font { get; set; } = "Helvetica";
         public float Text4Size { get; set; } = 12f;
         public string Text4Color { get; set; } = "Black";
 
         public string Text5 { get; set; } = string.Empty;
         public int Text5X { get; set; } = 0;
         public int Text5Y { get; set; } = 0;
+        public string Text5Font { get; set; } = "Helvetica";
         public float Text5Size { get; set; } = 12f;
         public string Text5Color { get; set; } = "Black";
+        #endregion Text Fields (5 Limit)
 
-        // Special Elements
+        #region Special Elements
         public bool AddSpine { get; set; } = false;
         public bool WhiteBackground { get; set; } = false;
+        #endregion
 
-        // Serialization Methods
+        #region Serialization Methods
         public string ToJson()
         {
             return JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
@@ -108,8 +120,9 @@ namespace PDF_Template_Generator.Models
                 return null;
             }
         }
+        #endregion
 
-        // Advanced Feature Detection
+        #region Advanced Feature Detection
         public bool HasAdvancedFeatures()
         {
             return BarcodeRotation != 0 || HasSpineElements();
@@ -153,8 +166,9 @@ namespace PDF_Template_Generator.Models
                    $"Legacy systems will not recognize rotated barcodes or spine elements.\n\n" +
                    $"Recommendation: Save as '{Name}_Advanced.json' to distinguish from legacy templates.";
         }
+        #endregion
 
-        // Legacy Import Support (for existing Playaway/Launchpad templates)
+        #region Legacy Import Support (for existing Playaway/Launchpad templates)
         public static TemplateConfig? ImportLegacyTemplate(string filePath)
         {
             if (!File.Exists(filePath)) return null;
@@ -247,5 +261,6 @@ namespace PDF_Template_Generator.Models
                 return null;
             }
         }
+        #endregion
     }
 } 

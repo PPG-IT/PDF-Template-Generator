@@ -316,12 +316,14 @@ namespace PDF_Template_Generator.Controls
             var address1 = GetElementProperty("Address1", "");
             var address2 = GetElementProperty("Address2", "");
             var address3 = GetElementProperty("Address3", "");
+            var font = GetElementProperty("Font", "Helvetica");
             var fontSize = GetElementProperty("FontSize", 12);
             var color = GetElementProperty("Color", "Black");
 
             AddTextInput(panel, "Line 1:", address1, (value) => UpdateElementProperty("Address1", value), row++);
             AddTextInput(panel, "Line 2:", address2, (value) => UpdateElementProperty("Address2", value), row++);
             AddTextInput(panel, "Line 3:", address3, (value) => UpdateElementProperty("Address3", value), row++);
+            AddComboBox(panel, "Font:", new [] { "Helvetica", "Times New Roman", "Courier" }, font, value => UpdateElementProperty("Font", value), row++);
             AddNumericInput(panel, "Font Size:", fontSize, (value) => UpdateElementProperty("FontSize", value), row++);
             AddComboBox(panel, "Color:", new[] { "Black", "Red", "Blue", "Green" }, color, (value) => UpdateElementProperty("Color", value), row++);
         }
@@ -331,10 +333,12 @@ namespace PDF_Template_Generator.Controls
             AddLabel(panel, "Text Settings:", row++);
             
             var text = GetElementProperty("Text", "");
+            var font = GetElementProperty("Font", "");
             var fontSize = GetElementProperty("FontSize", 12);
             var color = GetElementProperty("Color", "Black");
 
             AddTextInput(panel, "Text:", text, (value) => UpdateElementProperty("Text", value), row++);
+            AddComboBox(panel, "Font:", new [] { "Helvetica", "Times New Roman", "Courier" }, font, value => UpdateElementProperty("Font", value), row++);
             AddNumericInput(panel, "Font Size:", fontSize, (value) => UpdateElementProperty("FontSize", value), row++);
             AddComboBox(panel, "Color:", new[] { "Black", "Red", "Blue", "Green" }, color, (value) => UpdateElementProperty("Color", value), row++);
         }

@@ -430,6 +430,7 @@ namespace PDF_Template_Generator
                     element.Properties["Address1"] = "Address Line 1";
                     element.Properties["Address2"] = "Address Line 2";
                     element.Properties["Address3"] = "Address Line 3";
+                    element.Properties["Font"] = "Helvetica";
                     element.Properties["FontSize"] = 12;
                     element.Properties["Color"] = "Black";
                     element.Width = 200;
@@ -437,6 +438,7 @@ namespace PDF_Template_Generator
                     break;
                 case ElementType.Text:
                     element.Properties["Text"] = "Custom Text";
+                    element.Properties["Font"] = "Helvetica";
                     element.Properties["FontSize"] = 12;
                     element.Properties["Color"] = "Black";
                     break;
@@ -563,37 +565,38 @@ namespace PDF_Template_Generator
                 addressElement.Properties["Address1"] = template.Address1;
                 addressElement.Properties["Address2"] = template.Address2;
                 addressElement.Properties["Address3"] = template.Address3;
+                addressElement.Properties["Font"] = template.AddressFont;
                 addressElement.Properties["FontSize"] = (int)template.AddressSize;
                 addressElement.Properties["Color"] = template.AddressColor;
                 pdfPreviewControl.AddElement(addressElement);
             }
 
             // Add text elements
-            AddTextElementIfNotEmpty(template.Text1, template.Text1X, template.Text1Y, template.Text1Size, template.Text1Color, "Text 1");
-            AddTextElementIfNotEmpty(template.Text2, template.Text2X, template.Text2Y, template.Text2Size, template.Text2Color, "Text 2");
-            AddTextElementIfNotEmpty(template.Text3, template.Text3X, template.Text3Y, template.Text3Size, template.Text3Color, "Text 3");
-            AddTextElementIfNotEmpty(template.Text4, template.Text4X, template.Text4Y, template.Text4Size, template.Text4Color, "Text 4");
-            AddTextElementIfNotEmpty(template.Text5, template.Text5X, template.Text5Y, template.Text5Size, template.Text5Color, "Text 5");
+            AddTextElementIfNotEmpty(template.Text1, template.Text1X, template.Text1Y, template.Text1Font, template.Text1Size, template.Text1Color, "Text 1");
+            AddTextElementIfNotEmpty(template.Text2, template.Text2X, template.Text2Y, template.Text2Font, template.Text2Size, template.Text2Color, "Text 2");
+            AddTextElementIfNotEmpty(template.Text3, template.Text3X, template.Text3Y, template.Text3Font, template.Text3Size, template.Text3Color, "Text 3");
+            AddTextElementIfNotEmpty(template.Text4, template.Text4X, template.Text4Y, template.Text4Font, template.Text4Size, template.Text4Color, "Text 4");
+            AddTextElementIfNotEmpty(template.Text5, template.Text5X, template.Text5Y, template.Text5Font, template.Text5Size, template.Text5Color, "Text 5");
         }
 
-        private void AddTextElementIfNotEmpty(string text, int x, int y, float size, string color, string name)
+        private void AddTextElementIfNotEmpty(string text, int x, int y, string font, float size, string color, string name)
         {
-            if (!string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text)) return;
+            
+            var textElement = new VisualElement
             {
-                var textElement = new VisualElement
-                {
-                    Type = ElementType.Text,
-                    Name = name,
-                    X = x,
-                    Y = y,
-                    Width = 150,
-                    Height = 30
-                };
-                textElement.Properties["Text"] = text;
-                textElement.Properties["FontSize"] = (int)size;
-                textElement.Properties["Color"] = color;
-                pdfPreviewControl.AddElement(textElement);
-            }
+                Type = ElementType.Text,
+                Name = name,
+                X = x,
+                Y = y,
+                Width = 150,
+                Height = 30
+            };
+            textElement.Properties["Text"] = text;
+            textElement.Properties["Font"] = font;
+            textElement.Properties["FontSize"] = (int)size;
+            textElement.Properties["Color"] = color;
+            pdfPreviewControl.AddElement(textElement);
         }
 
         private void UpdateTemplateFromUI()
@@ -659,6 +662,7 @@ namespace PDF_Template_Generator
                         _currentTemplate.Address1 = element.Properties.GetValueOrDefault("Address1", "").ToString() ?? "";
                         _currentTemplate.Address2 = element.Properties.GetValueOrDefault("Address2", "").ToString() ?? "";
                         _currentTemplate.Address3 = element.Properties.GetValueOrDefault("Address3", "").ToString() ?? "";
+                        _currentTemplate.AddressFont = element.Properties.GetValueOrDefault("Font", "Helvetica").ToString() ?? "Helvetica";
                         _currentTemplate.AddressX = element.X;
                         _currentTemplate.AddressY = element.Y;
                         _currentTemplate.AddressSize = (int)element.Properties.GetValueOrDefault("FontSize", 12);
@@ -668,6 +672,7 @@ namespace PDF_Template_Generator
                     case ElementType.Text:
                         var text = element.Properties.GetValueOrDefault("Text", "").ToString() ?? "";
                         var fontSize = (int)element.Properties.GetValueOrDefault("FontSize", 12);
+                        var font = element.Properties.GetValueOrDefault("Font", "Helvetica").ToString() ?? "Helvetica";
                         var color = element.Properties.GetValueOrDefault("Color", "Black").ToString() ?? "Black";
 
                         switch (textIndex)
@@ -676,6 +681,7 @@ namespace PDF_Template_Generator
                                 _currentTemplate.Text1 = text;
                                 _currentTemplate.Text1X = element.X;
                                 _currentTemplate.Text1Y = element.Y;
+                                _currentTemplate.Text1Font = font;
                                 _currentTemplate.Text1Size = fontSize;
                                 _currentTemplate.Text1Color = color;
                                 break;
@@ -683,6 +689,7 @@ namespace PDF_Template_Generator
                                 _currentTemplate.Text2 = text;
                                 _currentTemplate.Text2X = element.X;
                                 _currentTemplate.Text2Y = element.Y;
+                                _currentTemplate.Text2Font = font;
                                 _currentTemplate.Text2Size = fontSize;
                                 _currentTemplate.Text2Color = color;
                                 break;
@@ -690,6 +697,7 @@ namespace PDF_Template_Generator
                                 _currentTemplate.Text3 = text;
                                 _currentTemplate.Text3X = element.X;
                                 _currentTemplate.Text3Y = element.Y;
+                                _currentTemplate.Text3Font = font;
                                 _currentTemplate.Text3Size = fontSize;
                                 _currentTemplate.Text3Color = color;
                                 break;
@@ -697,6 +705,7 @@ namespace PDF_Template_Generator
                                 _currentTemplate.Text4 = text;
                                 _currentTemplate.Text4X = element.X;
                                 _currentTemplate.Text4Y = element.Y;
+                                _currentTemplate.Text4Font = font;
                                 _currentTemplate.Text4Size = fontSize;
                                 _currentTemplate.Text4Color = color;
                                 break;
@@ -704,6 +713,7 @@ namespace PDF_Template_Generator
                                 _currentTemplate.Text5 = text;
                                 _currentTemplate.Text5X = element.X;
                                 _currentTemplate.Text5Y = element.Y;
+                                _currentTemplate.Text5Font = font;
                                 _currentTemplate.Text5Size = fontSize;
                                 _currentTemplate.Text5Color = color;
                                 break;
